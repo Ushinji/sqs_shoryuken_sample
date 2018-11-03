@@ -6,10 +6,10 @@
 * Git
 * Docker
 
-## リポジトリのクローン
+## リポジトリのクローン
 
 ```
-$ git clone git@github.com:~~~
+$ git clone git@github.com:Ushinji/sqs_shoryuken_sample.git
 $ cd path/to/repo
 ```
 
@@ -36,7 +36,7 @@ docker-compose exec --rm app bundle exec rails db:create
 docker-compose exec --rm app bundle exec rails db:migrate
 ```
 
-コンテナ起動
+コンテナー起動
 
 ```
 docker-compose up -d
