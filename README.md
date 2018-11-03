@@ -51,3 +51,6 @@ http://localhost:3000 にアクセスして、アプリが表示されること�
 docker-compose exec app rake sample:enque
 ```
 
+# Memo
+* productionを意識したコードを書いていますが、productionでは動きません。
+* 
