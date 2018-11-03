@@ -2,7 +2,7 @@ version: '3.7'
 services:
   app:
     build: .
-    command: [ "bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
+    command: [ "bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0" ]
     volumes:
       - ".:/app"
       - "bundle:/usr/local/bundle"
@@ -11,10 +11,29 @@ services:
       DATABASE_USER: root
       DATABASE_PASSWORD: password
       DATABASE_HOST: db
+      AWS_SQS_ENDPOINT: http://fake_sqs:9494
     depends_on:
       - db
+      - worker
+      - fake_sqs
     ports:
       - "3000:3000"
+
+  worker:
+    build: .
+    command: [ "./run/worker.sh" ]
+    volumes:
+      - ".:/app"
+      - "bundle:/usr/local/bundle"
+    environment:
+      RAILS_ENV: development
+      DATABASE_USER: root
+      DATABASE_PASSWORD: password
+      DATABASE_HOST: db
+      AWS_SQS_ENDPOINT: http://fake_sqs:9494
+    depends_on:
+      - db
+      - fake_sqs
   
   db:
     image: mysql:5.6
@@ -24,6 +43,13 @@ services:
       - "db-data:/var/lib/mysql"
     ports:
       - '3316:3306'
+  
+  fake_sqs:
+    image: feathj/fake-sqs
+    ports:
+      - 9494:9494
+    environment:
+      VIRTUAL_HOST: "fake_sqs"
 
 volumes:
   db-data:

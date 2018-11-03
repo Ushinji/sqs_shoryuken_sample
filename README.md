@@ -1,24 +1,53 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# 開発環境
 
-Things you may want to cover:
+## 必要環境
 
-* Ruby version
+* Git
+* Docker
 
-* System dependencies
+## リポジトリのクローン
 
-* Configuration
+```
+$ git clone git@github.com:~~~
+$ cd path/to/repo
+```
 
-* Database creation
 
-* Database initialization
+## 起動手順
 
-* How to run the test suite
+イメージのビルド
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+docker-compose build
+```
 
-* Deployment instructions
+bundle install
 
-* ...
+```
+docker-compose exec --rm app bundle install
+```
+
+DBマイグレーション
+
+```
+docker-compose exec --rm app bundle exec rails db:create
+
+docker-compose exec --rm app bundle exec rails db:migrate
+```
+
+コンテナ起動
+
+```
+docker-compose up -d
+```
+
+http://localhost:3000 にアクセスして、アプリが表示されることを確認。
+
+
+## キューメッセージを送信してみる
+
+```
+docker-compose exec app rake sample:enque
+```
+
